@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 export default function Appointment() {
   const [date, setDate] = useState('');
@@ -15,8 +16,9 @@ export default function Appointment() {
     { name: 'Steak', value: 'steak', image: '/images/steak.jpg' },
   ];
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const response = await fetch('/api/book', {
       method: 'POST',
       headers: {
@@ -24,6 +26,7 @@ export default function Appointment() {
       },
       body: JSON.stringify({ date, time, food }),
     });
+
     if (response.ok) {
       alert('Appointment booked successfully!');
     } else {
@@ -58,10 +61,12 @@ export default function Appointment() {
                   onChange={() => setFood(option.value)}
                   className="hidden"
                 />
-                <img
+                <Image
                   src={option.image}
                   alt={option.name}
-                  className={`w-32 h-32 object-cover border-2 ${
+                  width={128}
+                  height={128}
+                  className={`object-cover border-2 ${
                     food === option.value ? 'border-blue-500' : 'border-transparent'
                   }`}
                 />
